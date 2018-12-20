@@ -9,7 +9,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "spicysausage.auth0.com",
     clientID: "_QMdcI__n1H2wG74HzWfIT_FQAOI1-RJ",
-    redirectUri: "http://localhost:3333/homepage",
+    redirectUri: "http://localhost:3333/callback",
     responseType: "token id_token",
     scope: "openid"
   });
