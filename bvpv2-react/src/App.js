@@ -1,32 +1,67 @@
+// src/App.js
+
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import { Navbar, Button } from "react-bootstrap";
 import "./App.css";
 
-const apiUrl = "http://localhost:63446/api/values";
-
 class App extends Component {
-  state = {
-    values: []
-  };
-  async componentDidMount() {
-    var result = await fetch(apiUrl, { method: "GET", mode: "cors" });
-    var json = await result.json();
-    this.setState({ values: json });
+  goTo(route) {
+    this.props.history.replace(`/${route}`);
+  }
+
+  login() {
+    this.props.auth.login();
+  }
+
+  logout() {
+    this.props.auth.logout();
+  }
+
+  componentDidMount() {
+    const { renewSession } = this.props.auth;
+
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      renewSession();
+    }
   }
 
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+    const { isAuthenticated } = this.props.auth;
 
-          <h1>API Values</h1>
-          <ul>
-            {this.state.values.map(value => (
-              <li key={value}>{value}</li>
-            ))}
-          </ul>
-        </header>
+    return (
+      <div>
+        <Navbar fluid>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="#">Auth0 - React</a>
+            </Navbar.Brand>
+            <Button
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={this.goTo.bind(this, "home")}
+            >
+              Home
+            </Button>
+            {!isAuthenticated() && (
+              <Button
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={this.login.bind(this)}
+              >
+                Log In
+              </Button>
+            )}
+            {isAuthenticated() && (
+              <Button
+                bsStyle="primary"
+                className="btn-margin"
+                onClick={this.logout.bind(this)}
+              >
+                Log Out
+              </Button>
+            )}
+          </Navbar.Header>
+        </Navbar>
       </div>
     );
   }
