@@ -8,11 +8,11 @@ class App extends Component {
   state = {
     values: []
   };
-  componentDidMount() {
-    fetch(apiUrl, { method: "GET", mode: "cors" })
-      .then(res => this.setState({values: res});
+  async componentDidMount() {
+    var result = await fetch(apiUrl, { method: "GET", mode: "cors" });
+    var json = await result.json();
+    this.setState({ values: json });
   }
-
 
   render() {
     return (
@@ -22,9 +22,9 @@ class App extends Component {
 
           <h1>API Values</h1>
           <ul>
-            {/* {this.state.values.map(value => (
+            {this.state.values.map(value => (
               <li key={value}>{value}</li>
-            ))} */}
+            ))}
           </ul>
         </header>
       </div>
